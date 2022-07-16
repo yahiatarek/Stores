@@ -1,8 +1,9 @@
-// import database.SelectFromSQLServer;
+import database.SelectFromSQLServer;
+
 public class App {
 
   public static void main(String[] args) throws Exception {
-    // SelectFromSqlServer.runSqlServerConnection();
+    SelectFromSQLServer.runSqlServerConnection();
     GuiPanes.showMessage("Welcome to Stores.");
     int userChoice = Integer.parseInt(
       GuiPanes.inputDialogBox(

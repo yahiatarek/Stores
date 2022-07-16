@@ -1,5 +1,3 @@
-import javax.swing.*;
-
 public class Authentication {
   private static String adminUserName = "admin";
   private static int adminPassword = 123456;

@@ -1,10 +1,6 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 /**
@@ -12,13 +8,9 @@ import java.util.Properties;
  *
  */
 public class SelectFromSQLServer {
-  //The SQL Server JDBC Driver is in
-  //C:\Program Files\Microsoft JDBC Driver 6.0 for SQL Server\sqljdbc_6.0\enu\auth\x64
-  private static final String jdbcDriver =
-    "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-
   //The JDBC connection URL which allows for Windows authentication is defined below.
-  private static final String jdbcURL = "jdbc:sqlserver://localhost:1433;";
+  private static final String jdbcURL =
+    "jdbc:sqlserver://localhost:1433;encrypt=false;databaseName=Store";
 
   //To make Windows authentication work we have to set the path to sqljdbc_auth.dll at the command line
 
@@ -27,7 +19,7 @@ public class SelectFromSQLServer {
    *
    * @param  args  command line arguments
    */
-  public static void main(String[] args) {
+  public static void runSqlServerConnection() {
     System.out.println("Program started");
     Connection databaseConnection = null;
     try {
@@ -56,12 +48,8 @@ public class SelectFromSQLServer {
       rs = sqlStatement.executeQuery(queryString);
 
       //print a header row
-      System.out.println(
-        "\nParentOrganizationName\t|\tOrganizationName\t|\tCurrencyName"
-      );
-      System.out.println(
-        "----------------------\t|\t----------------\t|\t------------"
-      );
+      System.out.println("\nsale_id\t|\tsale_date\t|\tsale_product_quantity");
+      System.out.println("---------\t|\t---------\t|\t----------------------");
 
       //loop through the result set and call method to print the result set row
       while (rs.next()) {
@@ -96,5 +84,25 @@ public class SelectFromSQLServer {
     System.out.println(
       sale_id + "\t|\t" + sale_date + "\t|\t" + sale_product_quantity
     );
+  }
+
+  // to get database schemas
+  private static void executeGetSchemas(Connection con) {
+    try {
+      DatabaseMetaData dbmd = con.getMetaData();
+      ResultSet rs = dbmd.getSchemas();
+      ResultSetMetaData rsmd = rs.getMetaData();
+
+      // Display the result set data.
+      int cols = rsmd.getColumnCount();
+      while (rs.next()) {
+        for (int i = 1; i <= cols; i++) {
+          System.out.println(rs.getString(i));
+        }
+      }
+      rs.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
