@@ -6,21 +6,34 @@ public class Authentication {
 
   public static void login(String adminOrSalesMan) {
     if (adminOrSalesMan == "admin") {
-      GuiPanes.createAuthPanel(salesManPass, salesManUser);
+      // GuiPanes.createAuthPanel(adminPassword, adminUserName);
       adminTransactions();
     } else {
-      GuiPanes.createAuthPanel(adminPassword, adminUserName);
+      // GuiPanes.createAuthPanel(salesManPass, salesManUser);
       salesManTransactions();
     }
   }
 
   private static void adminTransactions() {
-    GuiPanes.inputDialogBox(
-      "please choose a transaction\n1-add a store\n2-add a product 3- add a supplier"
-    );
+    int userChoice = 0;
+    while (userChoice != 1 && userChoice != 2 && userChoice != 3) {
+      userChoice =
+        Integer.parseInt(
+          GuiPanes.inputDialogBox(
+            "please choose a transaction\n1-add a store\n2-add a product 3- add a supplier\n"
+          )
+        );
+      if (userChoice == 1) {
+        GuiPanes.createStorePanel();
+      } else if (userChoice == 2) {
+        GuiPanes.createProductPanel();
+      } else if (userChoice == 3) {
+        GuiPanes.createSupplierPanel();
+      } else {
+        GuiPanes.showMessage("please choose from the available options");
+      }
+    }
   }
 
-  private static void salesManTransactions() {
-    GuiPanes.createProductPanel();
-  }
+  private static void salesManTransactions() {}
 }
