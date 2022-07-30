@@ -2,6 +2,7 @@ package Store;
 
 import Product.Product;
 import Sale_transactions.Supplier;
+import Store.Store;
 
 public class Store {
   private int storeId;

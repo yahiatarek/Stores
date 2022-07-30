@@ -1,3 +1,7 @@
+import Product.SpecialProduct;
+import database.SpecialProductDb;
+import gui.GuiPanes;
+
 public class App {
 
   public static void main(String[] args) throws Exception {

@@ -1,7 +1,14 @@
+package gui;
+
 import Product.Product;
+import Product.SpecialProduct;
+import Sale_transactions.Client;
+import Sale_transactions.Sale;
 import Sale_transactions.Supplier;
 import Store.Store;
-import database.service;
+import database.*;
+import database.SaleTransactionsService;
+import database.ShopService;
 import java.awt.GridLayout;
 import javax.swing.*;
 
@@ -69,7 +76,40 @@ public class GuiPanes {
         productName.getText(),
         Integer.parseInt(storeId.getText())
       );
-      service.insertProductIntoDatabase(newProduct);
+      ShopService.insertProductIntoDatabase(newProduct);
+    }
+  }
+
+  public static void createProductPanel(Boolean isProductSpecial) {
+    JPanel productPanel = new JPanel(new GridLayout(0, 1));
+    JTextField productCost = createField(productPanel, "productCost");
+    JTextField productPrice = createField(productPanel, "productPrice");
+    JTextField productQuantity = createField(productPanel, "productQuantity");
+    JTextField productName = createField(productPanel, "productName");
+    JTextField productType = createField(productPanel, "productType");
+    JTextField productColor = createField(productPanel, "productColor");
+    JTextField storeId = createField(productPanel, "storeId");
+
+    int result = JOptionPane.showConfirmDialog(
+      null,
+      productPanel,
+      "Add Product",
+      JOptionPane.OK_CANCEL_OPTION,
+      JOptionPane.PLAIN_MESSAGE
+    );
+
+    if (result == JOptionPane.OK_OPTION) {
+      SpecialProduct newProduct = new SpecialProduct(
+        Double.parseDouble(productCost.getText()),
+        Double.parseDouble(productPrice.getText()),
+        Double.parseDouble(productQuantity.getText()),
+        productName.getText(),
+        Integer.parseInt(storeId.getText()),
+        productType.getText(),
+        productColor.getText()
+      );
+      SpecialProductDb.addToSpecialProducts(newProduct);
+      SpecialProductDb.getSpecialProducts();
     }
   }
 
@@ -93,7 +133,7 @@ public class GuiPanes {
         storeAddress.getText(),
         storeName.getText()
       );
-      service.insertStoreIntoDatabase(newStore);
+      ShopService.insertStoreIntoDatabase(newStore);
     }
   }
 
@@ -117,7 +157,7 @@ public class GuiPanes {
         supplierAddress.getText(),
         supplierName.getText()
       );
-      service.insertSupplierIntoDatabase(newSupplier);
+      ShopService.insertSupplierIntoDatabase(newSupplier);
     }
   }
 
@@ -126,5 +166,42 @@ public class GuiPanes {
     panel.add(new JLabel(label));
     panel.add(field);
     return field;
+  }
+
+  public static void createSellingPanel() {
+    JPanel sellingPanel = new JPanel(new GridLayout(0, 1));
+    JTextField clientPhoneNo = createField(sellingPanel, "clientPhoneNo");
+    JTextField clientId = createField(sellingPanel, "clientId");
+    JTextField clientCity = createField(sellingPanel, "clientCity");
+    JTextField clientName = createField(sellingPanel, "clientName");
+    JTextField productQuantity = createField(sellingPanel, "sold Quantity");
+    JTextField productId = createField(sellingPanel, "productId");
+
+    int result = JOptionPane.showConfirmDialog(
+      null,
+      sellingPanel,
+      "Selling transaction",
+      JOptionPane.OK_CANCEL_OPTION,
+      JOptionPane.PLAIN_MESSAGE
+    );
+
+    if (result == JOptionPane.OK_OPTION) {
+      Client newClient = new Client(
+        Integer.parseInt(clientPhoneNo.getText()),
+        clientCity.getText(),
+        clientName.getText(),
+        Integer.parseInt(clientId.getText())
+      );
+
+      Sale newSale = new Sale(
+        java.time.LocalDateTime.now(),
+        Integer.parseInt(productQuantity.getText())
+      );
+      SaleTransactionsService.insertNewSaleTransaction(
+        newSale,
+        newClient,
+        Integer.parseInt(productId.getText())
+      );
+    }
   }
 }

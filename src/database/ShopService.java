@@ -6,7 +6,7 @@ import Store.Store;
 import database.SQLServerConnection;
 import java.sql.*;
 
-public class service {
+public class ShopService {
 
   public static void insertProductIntoDatabase(Product product) {
     String queryString =
